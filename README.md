@@ -1,78 +1,154 @@
-<<<<<<< HEAD
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# LoginRegistrationApp
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+**LoginRegistrationApp** is a full-stack web application designed to handle user registration and login functionalities. The project consists of two main components:
 
-### `npm start`
+1. **Backend**: Built with ASP.NET Core 7, the backend handles API requests for user registration and login. It connects to a Microsoft SQL Server database to manage user data.
+2. **Frontend**: Developed using React.js, the frontend provides a user interface for registration and login. It communicates with the backend API to perform the required operations.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **User Registration**: Allows new users to create an account with a username, email, and password.
+- **User Login**: Enables registered users to log in using their email and password.
+- **Password Visibility Toggle**: Users can view or hide their password during login and registration.
+- **Responsive Design**: The application is designed to be mobile-friendly and responsive across different devices.
 
-### `npm test`
+## Technologies Used
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Backend**:
+  - ASP.NET Core 7
+  - Microsoft SQL Server
+  - C#
+  - Entity Framework Core (for data access)
+  
+- **Frontend**:
+  - React.js
+  - Bootstrap (for styling)
+  - Axios (for making HTTP requests)
 
-### `npm run build`
+## Setup
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Backend
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Clone the Repository**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```bash
+   git clone https://github.com/abdulrahman2018/LoginRegistrationApp.git
+   ```
 
-### `npm run eject`
+2. **Navigate to the Backend Directory**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+   ```bash
+   cd LoginRegistrationApp/Backend
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. **Restore Packages and Build the Project**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+   ```bash
+   dotnet restore
+   dotnet build
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+4. **Run the Backend**
 
-## Learn More
+   ```bash
+   dotnet run
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   The backend will be available at `https://localhost:7167`.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+5. **Database Setup**
 
-### Code Splitting
+   Ensure you have Microsoft SQL Server installed. Create a database named `TestCoreApp` and run the SQL scripts for creating tables and stored procedures:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+   ```sql
+   CREATE DATABASE TestCoreApp;
+   USE TestCoreApp;
 
-### Analyzing the Bundle Size
+   CREATE TABLE USERS (
+       ID INT IDENTITY (1,1) PRIMARY KEY,
+       Username VARCHAR(200),
+       Email VARCHAR(200),
+       Password VARCHAR(200)
+   );
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+   CREATE PROC sp_register
+       @Username VARCHAR(100),
+       @Email VARCHAR(100),
+       @Password VARCHAR(100),
+       @ErrorMessage VARCHAR(200) OUTPUT
+   AS
+   BEGIN
+       IF NOT EXISTS (SELECT 1 FROM USERS WHERE Email = @Email)
+       BEGIN
+           INSERT INTO USERS (Username, Email, Password)
+           VALUES (@Username, @Email, @Password);
+           SET @ErrorMessage = 'User created successfully';
+       END
+       ELSE
+       BEGIN
+           SET @ErrorMessage = 'User already exists with the same email';
+       END
+   END;
 
-### Making a Progressive Web App
+   CREATE PROC sp_login
+       @Email VARCHAR(100),
+       @Password VARCHAR(100)
+   AS
+   BEGIN
+       SELECT * FROM USERS
+       WHERE Email = @Email AND Password = @Password;
+   END;
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Frontend
 
-### Advanced Configuration
+1. **Navigate to the Frontend Directory**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+   ```bash
+   cd LoginRegistrationApp/Frontend
+   ```
 
-### Deployment
+2. **Install Dependencies**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+   ```bash
+   npm install
+   ```
 
-### `npm run build` fails to minify
+3. **Run the Frontend**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# login-registration-frontend
-# login-registration-frontend
-# login-registration-frontend
-=======
-# login-registration-frontend
->>>>>>> 4af4f698dd0883d3846728e3a30a8ee31b23d1ea
-# LoginRegistrationNewApp
+   ```bash
+   npm start
+   ```
+
+   The frontend will be available at `http://localhost:3000`.
+
+## Project Structure
+
+- **Backend**:
+  - `Controllers/`: Contains API controllers.
+  - `Models/`: Contains data models and data access layer (DAL).
+  - `Program.cs`: Configures and starts the ASP.NET Core application.
+
+- **Frontend**:
+  - `src/`: Contains React components, CSS files, and other frontend assets.
+  - `public/`: Contains public assets like `index.html`.
+
+## Usage
+
+- **Registration**: Navigate to the registration page, enter the username, email, and password, then submit the form to create a new account.
+- **Login**: Navigate to the login page, enter the email and password, then submit the form to log in.
+
+## Contributing
+
+Feel free to fork the repository, make changes, and submit pull requests. Contributions are welcome!
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+Replace `abdulrahman2018` in the clone URL with your actual GitHub username and update any other project-specific details as needed.
