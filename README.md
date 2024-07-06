@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -71,3 +72,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 # login-registration-frontend
 # login-registration-frontend
 # login-registration-frontend
+=======
+# login-registration-frontend
+>>>>>>> 4af4f698dd0883d3846728e3a30a8ee31b23d1ea
+# LoginRegistrationNewApp
